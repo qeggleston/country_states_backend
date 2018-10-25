@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from states.models import State
+from countries.models import Country
 from states.serializers import StateSerializer
 from django.http import Http404
 from rest_framework.views import APIView
@@ -9,12 +10,14 @@ from rest_framework import status
 # Create your views here.
 class StateList(APIView):
     def get(self, request, code, format=None):
-        states = State.objects.all()
+        states = State.objects.filter(country__code=code)
         serializer = StateSerializer(states, many=True)
         return Response(serializer.data)
-    def post(self, request, format=None):
+    def post(self, request, code, format=None):
         serializer = StateSerializer(data=request.data)
+        
         if(serializer.is_valid()):
+            print(serializer.validated_data)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -5,5 +5,4 @@ from countries.models import Country
 class State(models.Model): 
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=10)
-    countryId = models.IntegerField()
-    #country = models.ForeignKey(Country, related_name='Country', on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, related_name='Country', on_delete=models.CASCADE)
