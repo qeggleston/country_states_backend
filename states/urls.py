@@ -5,4 +5,5 @@ from states import views
 
 urlpatterns = [
     path('', views.StateList.as_view()),   
+    path('<str:code>', views.StateDetail.as_view()),
 ]
