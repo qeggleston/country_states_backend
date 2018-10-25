@@ -15,7 +15,9 @@ class StateList(APIView):
         serializer = StateSerializer(states, many=True)
         return Response(serializer.data)
     def post(self, request, code, format=None):
-        serializer = StateSerializer(data=request.data)        
+        jsonData = request.data
+        jsonData['country'] = (Country.objects.get(code=code.upper())).id
+        serializer = StateSerializer(data=jsonData)        
         if(serializer.is_valid()):
             print(serializer.validated_data)
             serializer.save()
